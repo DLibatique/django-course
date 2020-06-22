@@ -1,0 +1,22 @@
+h1 {
+  font-family: "Arial";
+  text-align: center;
+}
+
+p {
+  font-family: 'Barrio', cursive;
+}
+
+body {
+  font-size: 20px;
+}
+
+#two {
+  font-size: 1.0em;
+}
+
+/*
+em = font that applies to the parent of the element in question
+1em = 16px
+2em = 32px
+*/

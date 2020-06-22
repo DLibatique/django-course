@@ -1,0 +1,33 @@
+.firstDiv { /* classes indicated with . */
+  color: red;
+}
+
+.secondDiv {
+  color: blue;
+}
+
+#singledout { /* ids indicated with # */
+  color: green;
+  text-decoration: line-through;
+}
+
+/* overrides everything on the page except ids
+
+* {
+  color: black;
+}
+
+*/
+
+h3 + ul { /* adjacent siblings */
+  border: 4px dotted purple; /* width style color */
+}
+
+li a { /* descendants */
+  color: red;
+}
+
+li a[href="www.npr.org"] { /* attribute */
+  color: blue;
+  border: 5px solid orange;
+}

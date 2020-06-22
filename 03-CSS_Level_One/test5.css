@@ -1,0 +1,11 @@
+li {
+  color: red;
+}
+
+.topitems { /* higher priority than general tag calls */
+  color: blue;
+}
+
+#two { /* higher priority than class or general tags */
+  border: 3px solid black;
+}
