@@ -1,0 +1,12 @@
+td {
+  border: 5px solid black;
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  color: black;
+  font-size: 50px;
+}
+
+#board {
+  border: 5px solid black;
+}
