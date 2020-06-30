@@ -25,11 +25,37 @@
 import random
 digits = list(range(10))
 random.shuffle(digits)
-print(digits[:3])
+# print(digits[:3])
+computer_number = ''
+for i in digits[:3]:
+    computer_number += str(i)
+print(computer_number)
 
 # Another hint:
 guess = input("What is your guess? ")
-print(guess)
+
+win = False
+
+while win == False:
+
+    for x in guess:
+        if guess[guess.index(x)] != computer_number[guess.index(x)] and x in computer_number:
+            guess = input("You guessed a correct number in the wrong position! Guess another number! ")
+        elif guess[guess.index(x)] == computer_number[guess.index(x)] and guess != computer_number:
+            guess = input("You guessed a correct number in the right position! Guess another number! ")
+        elif guess == computer_number:
+            win = True
+        else:
+            guess = input("No matches! Guess another number! ")
+
+
+# if guess == computer_number:
+#     print("Correct!")
+# else:
+#     print("Nope.")
+#
+# def compare_numbers(a, b):
+
 
 # Think about how you will compare the input to the random number, what format
 # should they be in? Maybe some sort of sequence? Watch the Lecture video for more hints!
