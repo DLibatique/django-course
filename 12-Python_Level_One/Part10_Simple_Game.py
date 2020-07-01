@@ -32,22 +32,36 @@ for i in digits[:3]:
 print(computer_number)
 
 # Another hint:
-guess = input("What is your guess? ")
+
 
 win = False
 
 while win == False:
 
-    for x in guess:
-        if guess[guess.index(x)] != computer_number[guess.index(x)] and x in computer_number:
-            guess = input("You guessed a correct number in the wrong position! Guess another number! ")
-        elif guess[guess.index(x)] == computer_number[guess.index(x)] and guess != computer_number:
-            guess = input("You guessed a correct number in the right position! Guess another number! ")
+    checks = []
+
+    guess = input("What is your guess? ")
+
+    for x,y in enumerate(guess):
+        if y != computer_number[x] and y in computer_number:
+            checks.append("close")
+        elif y == computer_number[x] and guess != computer_number:
+            checks.append("match")
         elif guess == computer_number:
             win = True
+            print("Congrats! You guessed correctly!")
+            break
         else:
-            guess = input("No matches! Guess another number! ")
+            checks.append("nope")
 
+    if "close" in checks and "match" not in checks:
+        print("You've guessed a correct number but in the wrong position!")
+    elif "match" in checks and "close" not in checks:
+        print("You've guessed a correct number in the correct position!")
+    elif "match" in checks and "close" in checks:
+        print("You've guessed a correct number in the correct position and a correct number but in the wrong position!")
+    elif checks == ['nope', 'nope', 'nope']:
+        print("You haven't guess any of the numbers correctly!")
 
 # if guess == computer_number:
 #     print("Correct!")
