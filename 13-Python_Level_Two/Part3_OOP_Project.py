@@ -26,7 +26,8 @@
 #
 # https://en.wikipedia.org/wiki/War_(card_game)
 
-from random import shuffle
+from random import shuffle, sample
+from itertools import product
 
 # Two useful variables for creating Cards.
 SUITE = 'H D S C'.split()
@@ -39,26 +40,169 @@ class Deck:
     the players. It will use SUITE and RANKS to create the deck. It should also
     have a method for splitting/cutting the deck in half and Shuffling the deck.
     """
-    pass
+
+    def __init__(self):
+        self.allcards = [(s, r) for s in SUITE for r in RANKS]
+
+    def shuffleCards(self):
+        shuffle(self.allcards)
+
+    def halve(self):
+        return (self.allcards[:26], self.allcards[26:])
 
 class Hand:
     '''
     This is the Hand class. Each player has a Hand, and can add or remove
     cards from that hand. There should be an add and remove card method here.
     '''
-    pass
+    def __init__(self, cards):
+        self.cards = cards
+
+    def addCard(self, addition):
+        self.cards.append(addition)
+
+    def removeCard(self):
+        return self.cards.pop()
 
 class Player:
     """
     This is the Player class, which takes in a name and an instance of a Hand
     class object. The Payer can then play cards and check if they still have cards.
     """
-    pass
+    def __init__(self, name, hand):
+        self.name = name
+        self.hand = hand
+
+    def playCard(self):
+        play = self.hand.removeCard()
+        print(f"{self.name} has played: "+play[0]+play[1])
+        return play
+
+    def playWarCards(self):
+        war_cards = []
+        if len(self.hand.cards) < 4:
+            print(f"{self.name} doesn't have enough cards!")
+            return war_cards
+        else:
+            for x in range(3):
+                war_cards.append(self.hand.cards.pop(0))
+            return war_cards
+
+    def still_has_cards(self):
+        return len(self.hand.cards) != 0
+
+
 
 
 ######################
 #### GAME PLAY #######
 ######################
 print("Welcome to War, let's begin...")
+
+d = Deck()
+d.shuffleCards()
+d1, d2 = d.halve()
+my_hand, comp_hand = Hand(d1), Hand(d2)
+me, comp = Player("Daniel",my_hand), Player("Computer",comp_hand)
+
+turn_counter = 0
+war_counter = 0
+
+while me.still_has_cards() and comp.still_has_cards():
+
+    # add to turn counter
+    turn_counter += 1
+
+    # indicate how many cards each player has
+    print(f"At turn start, I have {len(me.hand.cards)} cards, comp has {len(comp.hand.cards)} cards")
+
+    # initialize pot of cards that will go to winner of round
+    table_cards = []
+
+    # each player picks one
+    x, y = me.playCard(), comp.playCard()
+    for l in [x,y]:
+        table_cards.append(l)
+
+    # player > computer
+    if RANKS.index(x[1]) > RANKS.index(y[1]):
+        print(f"{me.name} wins this hand!")
+        for l in table_cards:
+            me.hand.addCard(l)
+
+    # player < computer
+    elif RANKS.index(x[1]) < RANKS.index(y[1]):
+        print(f"{comp.name} wins this hand!")
+        for l in table_cards:
+            comp.hand.addCard(l)
+
+    # ranks are equal --> war
+    else:
+        print("It's war!")
+
+        # add to war counter
+        war_counter += 1
+
+        # get war cards and add to table cards
+        for l in me.playWarCards() + comp.playWarCards():
+            table_cards.append(l)
+
+        # flip next card
+        c, d = me.playCard(), comp.playCard()
+        for l in [c, d]:
+            table_cards.append(l)
+
+        # player card is higher rank than computer
+        if RANKS.index(c[1]) > RANKS.index(d[1]):
+            print(f"{me.name} wins this war!")
+            for card in table_cards:
+                me.hand.addCard(card)
+
+        # computer card is higher rank than player
+        elif RANKS.index(c[1]) < RANKS.index(d[1]):
+            print(f"{comp.name} wins this war!")
+            for card in table_cards:
+                comp.hand.addCard(card)
+
+        # ranks are equal --> burn one, play one
+        else:
+            print("Another flip!")
+
+            # burn one
+            e, f = me.playCard(), comp.playCard()
+            for x in [e, f]:
+                table_cards.append(x)
+
+            # compare one
+            g, h = me.playCard(), comp.playCard()
+            for x in [g, h]:
+                table_cards.append(x)
+
+            # player > computer
+            if RANKS.index(g[1]) > RANKS.index(h[1]):
+                print(f"{me.name} wins this war!")
+                for card in table_cards:
+                    me.hand.addCard(card)
+
+            # player < computer
+            elif RANKS.index(g[1]) < RANKS.index(h[1]):
+                print(f"{comp.name} wins this war!")
+                for card in table_cards:
+                    comp.hand.addCard(card)
+
+            # another match, how to keep this going??
+            else:
+                print("I give up!")
+
+    print(f"After this round, I have {len(me.hand.cards)} cards, comp has {len(comp.hand.cards)} cards")
+    round_end = input("Press enter to continue!\n\n")
+
+else:
+
+    if not me.still_has_cards():
+        print(f"{comp.name} wins!")
+    else:
+        print(f"{me.name} wins!")
+    print(f"The game lasted {str(turn_counter)} turns, and there were {str(war_counter)} wars.")
 
 # Use the 3 classes along with some logic to play a game of war!
