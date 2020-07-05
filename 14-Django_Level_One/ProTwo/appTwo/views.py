@@ -5,3 +5,7 @@ from django.http import HttpResponse
 
 def index(request):
     return HttpResponse('<em>My Second App</em>')
+
+def help(request):
+    my_dict = {'header': 'Help Page'}
+    return render(request, 'AppTwo/help.html', context=my_dict)
