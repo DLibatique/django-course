@@ -19,8 +19,6 @@ def add_users(N=5):
         fake_email = fakegen.email()
 
         usr = User.objects.get_or_create(first_name=fake_first_name, last_name=fake_last_name, email=fake_email)[0]
-        print(usr)
-        usr.save()
 
 if __name__ == '__main__':
     print("populating script!")
