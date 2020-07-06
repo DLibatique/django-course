@@ -3,4 +3,5 @@ from AppTwo import views
 
 urlpatterns = [
     re_path(r'^$', views.help, name="help"),
+    re_path(r'^$', views.user, name="user")
 ]
