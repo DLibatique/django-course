@@ -16,10 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from basic_app import views
+from django.conf.urls import include
 
 urlpatterns = [
     # path('', views.index), # function based view
     # path('', views.CBView.as_view()), # class based view
     path('', views.IndexView.as_view()), # template view
     path('admin/', admin.site.urls),
+    path('basic_app/', include('basic_app.urls', namespace='basic_app')),
 ]
